@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
+    <title>Bun Chat GPT</title>
+
+    <style>
+        .scrollbar {
+            height: 60vh;
+            overflow: auto;
+        }
+
+        @media (min-width: 992px) {
+            main .grid {
+                grid-template-columns: auto 75%;
+            }
+        }
+
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .hero {
+            background-color: #394046;
+            background-position: center;
+            background-size: cover;
+        }
+
+        main.container-fluid {
+            padding-top: 1.5rem;
+        }
+
+        aside {
+            height: 85vh;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body hx-trigger="load" hx-get="/load-history-on-page-load" hx-target=".chat-history" hx-swap="afterbegin">
+    <nav class="container-fluid">
+        <ul>
+            <li>
+                <strong>Chat GPT Clone using HTMX and Bun</strong>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="https://www.youtube.com/@learnpratap" target="_blank">Youtube</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="container-fluid">
+        <div class="grid">
+            <aside>
+                <div class="sidebar">
+                    <button hx-get="/clear-chat" hx-target=".messages" hx-swap="outerHTML">New Chat</button>
+                    <div class="chat-history">
+                        <!-- New button for new chat goes here -->
+                    </div>
+                </div>
+            </aside>
+            <section>
+                <div class="chat-box">
+                    <div class="scrollbar">
+                        <div id="messages" class="messages">
+                            <!-- Conversation goes here -->
+                        </div>
+                        <button class="htmx-indicator" id="indicator" aria-busy="true">Please wait...</button>
+                    </div>
+                    <form hx-post="/new-chat" hx-target=".messages" hx-swap="beforeend" _="on submit target.reset()">
+                        <textarea id="message-input" name="message"></textarea>
+                        <button>Send</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>
